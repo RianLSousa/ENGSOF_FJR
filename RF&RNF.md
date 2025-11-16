@@ -1,4 +1,4 @@
-# Requesitos Funcionais
+# Requisitos Funcionais
 
 | Código | Descrição |
 |--------|-----------|
@@ -28,7 +28,7 @@
 | RF24 | A senha pode ser recuperada por meio de um processo de recuperação por e-mail |
 | RF25 | O usuário poderá escolher o responsável pela tarefa ao gerenciar os usuários (campo de usuários cadastrados) |
 
-# Requesitos não Funcionais
+# Requisitos não Funcionais
 
 | Código | Descrição |
 |--------|-----------|
