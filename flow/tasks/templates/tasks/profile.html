@@ -1,0 +1,78 @@
+{% extends 'tasks/base.html' %}
+{% block title %}Meu Perfil{% endblock %}
+
+{% block content %}
+<div class="row g-4">
+
+    <!-- Card do usuário -->
+    <div class="col-md-4">
+        <div class="card p-4 text-center">
+            <div class="avatar bg-primary text-white mx-auto mb-3"
+                 style="width:80px; height:80px; font-size:2rem; border-radius:50%;
+                        display:flex; align-items:center; justify-content:center;">
+                {{ user.username|first|upper }}
+            </div>
+            <h4 class="fw-bold mb-0">{{ user.username }}</h4>
+            <p class="text-muted mb-3">{{ user.email|default:"Sem e-mail cadastrado" }}</p>
+            <p class="text-muted small">
+                <i class="bi bi-calendar3"></i>
+                Membro desde {{ user.date_joined|date:"d/m/Y" }}
+            </p>
+            <hr>
+            <!-- Estatísticas -->
+            <div class="row text-center g-2">
+                <div class="col-4">
+                    <div class="fw-bold fs-4 text-primary">{{ my_projects.count }}</div>
+                    <small class="text-muted">Projetos</small>
+                </div>
+                <div class="col-4">
+                    <div class="fw-bold fs-4 text-warning">{{ tasks_doing }}</div>
+                    <small class="text-muted">Em andamento</small>
+                </div>
+                <div class="col-4">
+                    <div class="fw-bold fs-4 text-success">{{ tasks_done }}</div>
+                    <small class="text-muted">Concluídas</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarefas atribuídas -->
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h5 class="fw-bold mb-4">
+                <i class="bi bi-check2-square"></i> Minhas Tarefas
+                <span class="badge bg-secondary ms-1">{{ my_tasks.count }}</span>
+            </h5>
+
+            {% for task in my_tasks %}
+            <div class="d-flex align-items-center justify-content-between
+                        p-3 mb-2 rounded" style="background:#f8f9fa;">
+                <div>
+                    <a href="{% url 'task_detail' task.pk %}"
+                       class="fw-semibold text-decoration-none text-dark">
+                        {{ task.title }}
+                    </a>
+                    <small class="text-muted d-block">
+                        <i class="bi bi-folder2"></i> {{ task.project.name }}
+                    </small>
+                </div>
+                {% if task.status == 'todo' %}
+                    <span class="badge bg-secondary">A Fazer</span>
+                {% elif task.status == 'doing' %}
+                    <span class="badge bg-warning text-dark">Em Progresso</span>
+                {% else %}
+                    <span class="badge bg-success">Concluído</span>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                Nenhuma tarefa atribuída a você.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

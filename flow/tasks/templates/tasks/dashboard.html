@@ -1,0 +1,71 @@
+{% extends 'tasks/base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Olá, {{ user.username }}! 👋</h2>
+    <a href="{% url 'project_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Novo Projeto
+    </a>
+</div>
+
+<!-- Notificações não lidas -->
+{% if notifications %}
+<div class="alert alert-info d-flex align-items-center mb-4">
+    <i class="bi bi-bell-fill me-2"></i>
+    <span>Você tem <strong>{{ notifications.count }}</strong> notificação(ões) nova(s).</span>
+</div>
+{% endif %}
+
+<!-- Meus Projetos -->
+<h5 class="fw-semibold mb-3"><i class="bi bi-folder2-open"></i> Meus Projetos</h5>
+{% if my_projects %}
+    <div class="row g-3 mb-4">
+        {% for project in my_projects %}
+        <div class="col-md-4">
+            <div class="card h-100 p-3">
+                <div class="d-flex justify-content-between align-items-start">
+                    <h5 class="fw-bold mb-1">{{ project.name }}</h5>
+                    <span class="badge bg-primary">Dono</span>
+                </div>
+                <p class="text-muted small mb-3">{{ project.description|default:"Sem descrição." }}</p>
+                <div class="mt-auto d-flex gap-2">
+                    <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-primary w-100">
+                        <i class="bi bi-kanban"></i> Abrir
+                    </a>
+                    <a href="{% url 'project_edit' project.pk %}" class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a href="{% url 'project_delete' project.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card p-4 text-center text-muted mb-4">
+        <i class="bi bi-folder-plus fs-2 mb-2"></i>
+        <p>Você ainda não criou nenhum projeto. <a href="{% url 'project_create' %}">Criar agora</a></p>
+    </div>
+{% endif %}
+
+<!-- Projetos que participo -->
+{% if member_projects %}
+<h5 class="fw-semibold mb-3"><i class="bi bi-people"></i> Projetos que participo</h5>
+<div class="row g-3">
+    {% for project in member_projects %}
+    <div class="col-md-4">
+        <div class="card h-100 p-3">
+            <h5 class="fw-bold mb-1">{{ project.name }}</h5>
+            <p class="text-muted small mb-3">{{ project.description|default:"Sem descrição." }}</p>
+            <a href="{% url 'project_detail' project.pk %}" class="btn btn-sm btn-outline-primary mt-auto">
+                <i class="bi bi-kanban"></i> Abrir
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
